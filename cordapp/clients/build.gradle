@@ -10,10 +10,22 @@ sourceSets {
 }
 
 dependencies {
+
+    // JAX-RS 2.0(.1)
+    compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+
+    // Jersey 2.15
+    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.15'
+
+    // Servlet 3
+    compile 'javax.servlet:javax.servlet-api:3.1.0'
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Corda dependencies.
     compile "$corda_release_group:corda-rpc:$corda_release_version"
+    compile "$corda_release_group:corda-jackson:$corda_release_version"
+
 
     // CorDapp dependencies.
     compile project(":contracts")
@@ -23,9 +35,13 @@ dependencies {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
 
+    compile "org.springframework.boot:spring-boot-starter-log4j2:$spring_boot_version"
+
     compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4j_version}"
     compile "org.apache.logging.log4j:log4j-web:${log4j_version}"
     compile "org.slf4j:jul-to-slf4j:$slf4j_version"
+
+
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
