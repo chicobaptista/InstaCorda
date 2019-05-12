@@ -1,5 +1,6 @@
 package com.template.states
 
+import com.template.contracts.AccountContract
 import net.corda.core.contracts.LinearState
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.identity.AbstractParty
@@ -8,7 +9,9 @@ import net.corda.core.schemas.PersistentState
 import net.corda.core.schemas.QueryableState
 import com.template.model.AccountModel
 import com.template.schema.AccountSchemaV1
+import net.corda.core.contracts.BelongsToContract
 
+@BelongsToContract(AccountContract::class)
 data class AccountState(val account: AccountModel,
                         override val linearId: UniqueIdentifier = UniqueIdentifier()
 ) : LinearState, QueryableState {

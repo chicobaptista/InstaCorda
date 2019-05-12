@@ -1,5 +1,6 @@
 package com.template.states
 
+import com.template.contracts.TransferContract
 import net.corda.core.contracts.LinearState
 import net.corda.core.contracts.UniqueIdentifier
 import net.corda.core.identity.AbstractParty
@@ -8,7 +9,10 @@ import net.corda.core.schemas.PersistentState
 import net.corda.core.schemas.QueryableState
 import com.template.model.TransferModel
 import com.template.schema.TransferSchemaV1
+import net.corda.core.contracts.BelongsToContract
 
+
+@BelongsToContract(TransferContract::class)
 data class TransferState(val transfer: TransferModel,
                          override val linearId: UniqueIdentifier = UniqueIdentifier()): LinearState, QueryableState {
 

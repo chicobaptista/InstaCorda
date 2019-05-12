@@ -18,7 +18,7 @@ import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.ProgressTracker
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 /*
 flow start CreateDebitFlow uid: uid1, pubkey: pubkey1, currency: brl1, hashProfile: hash1, balance: 1000
@@ -64,20 +64,13 @@ object AccountFlow {
 
             progressTracker.currentStep = INITIALISING
 
-            // Step 1 - Verifies whether the account requested already exists in this Bank
-            val accountList = getAccountStateByDocument(document)
-            if (accountList.isNotEmpty()) {
-                // If the account already exist throw an error
-                throw Exception("\n" + "This account already exists")
-            }
-
-            // Step 2 - Define a new account initial data
+            // Step 1 - Define a new account initial data
             val account = AccountModel(ourIdentity, ourIdentity.name.organisation, Instant.now(), name, document, balance)
 
-            // Step 3 - Creates a new state for the account
+            // Step 2 - Creates a new state for the account
             val accountState = AccountState(account)
 
-            // Step 4 - Create the command list for contract validation
+            // Step 3 - Create the command list for contract validation
             val txCommand = Command(
                     AccountContract.Commands.CreateAccount(),
                     accountState.participants.map { it.owningKey }
@@ -85,10 +78,10 @@ object AccountFlow {
 
             progressTracker.currentStep = BUILDING
 
-            // Step 5 - Define a notary for this transaction
+            // Step 4 - Define a notary for this transaction
             val notary = serviceHub.networkMapCache.notaryIdentities.single()
 
-            // Step 6 - Build and validating the transaction
+            // Step 5 - Build and validating the transaction
             val txBuilder = TransactionBuilder(notary)
                     .addCommand(txCommand)
                     .addOutputState(accountState, AccountContract::class.java.canonicalName)
@@ -97,26 +90,16 @@ object AccountFlow {
 
             progressTracker.currentStep = SIGNING
 
-            // Step 7 - The Bank (Org) sing the transaction
+            // Step 6 - The Bank (Org) sing the transaction
             val signedTx = serviceHub.signInitialTransaction(txBuilder, ourIdentity.owningKey)
 
             progressTracker.currentStep = FINALISING
 
-            // Step 8 - Finalising the single party flow
+            // Step 7 - Finalising the single party flow
             return subFlow(FinalityFlow(signedTx, emptyList()))
 
         }
 
-        private fun getAccountStateByDocument(id : String) : List<StateAndRef<AccountState>> {
-
-            val uuid = UUID.fromString(id)
-
-            val query = QueryCriteria.LinearStateQueryCriteria( uuid = listOf(uuid) )
-
-            return serviceHub.vaultService.queryBy<AccountState>(query).states
-
-
-        }
 
     }
 

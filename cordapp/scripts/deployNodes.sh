@@ -2,7 +2,7 @@
 
 cd ../
 
-killall java -9
+#killall java -9
 
 rm -rf kotlin-source/build/nodes
 

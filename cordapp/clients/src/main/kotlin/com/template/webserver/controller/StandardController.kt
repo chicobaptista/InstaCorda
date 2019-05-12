@@ -67,17 +67,6 @@ class StandardController(private val rpc: NodeRPCConnection) {
     @GetMapping(value = "/flows", produces = arrayOf("text/plain"))
     private fun flows() = proxy.registeredFlows().toString()
 
-    @GetMapping(value = "/states", produces = arrayOf(MediaType.APPLICATION_JSON))
-    private fun states(): Response {
-        val criteria = QueryCriteria.VaultQueryCriteria(Vault.StateStatus.ALL)
-
-        val result = proxy.vaultQueryBy<ExampleState>(criteria = criteria).states
-
-        return Response.status(Response.Status.CREATED).entity( result ).build()
-    }
-
-
-
 
 
 }
