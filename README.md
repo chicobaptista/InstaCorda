@@ -1,12 +1,14 @@
 # InstaCorda
-A spike/PoC for Brazil's Central Bank Instant Payment implemented on R3 Corda blockchain
+A Spike/Proof of Concept for Brazil's Central Bank Instant Payment implemented on R3 Corda blockchain
 
-It allows for moving funds between two end users by consolidating asset transfers between the relevant Finance Institutions directly using the base FungibleAssets contract.
+It allows for moving funds between two end users (natural and/or legal person) by consolidating asset transfers between the relevant Finance Institutions directly. That is possible by transferring balances between banks on the Central Bank ledger, allowing for immediate transfers of money between the two end users even if they are clients of different Financial Institutions.
+The use of the R3 Corda blockchains grants transparency, immutability and auditability to all such transactions.
 
 ## How it works
 The blockchain layer is composed of a base Network consisting of two Banks, the Central Bank and a Notary.
 Each Node can store data about:
 * An end user Account State, which records id info as well as its balance on a given Bank.
+* A financial institution Bank State, which records id info as well as a list of Accoounts under it.
 
 ## How to build and deploy
 ### Local nodes network
@@ -44,4 +46,10 @@ The REST endpoints are:
     Returns a given bank from its legal ID
   /history/:id
     Returns the bank's transaction history from its legal ID
+    
+  ## Team & Credits
   
+  - Catarina Gonçalves
+  - Francisco Baptista
+  - Thiago Cardozo
+  - Vitor Motta
